@@ -9,6 +9,7 @@ var SimpleRecordSchema = {
 		{ name: 'value', type: ['null', 'string'] }
 	]
 };
+
 var LongListSchema = {
 		  "type": "record",
 		  "name": "LongList",
@@ -60,6 +61,8 @@ describe('Avro-Parser', function() {
 			},
 			'LongList'
 		);
+
+		assert.equal(result.next.LongList != null, true, "Record types should be specied in values");
     });
 
     it('should retun null for a pure null value', function () {
@@ -86,8 +89,8 @@ describe('Avro-Parser', function() {
 			},
 			'ArrayTest'
 		);
-		assert.equal(result.recordList.length, 3);
 
+		assert.equal(result.recordList.length, 3);
 
 	});
 
