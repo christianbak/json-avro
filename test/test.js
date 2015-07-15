@@ -107,6 +107,25 @@ describe('Avro-Parser', function() {
 
 	});
 
+	it('should handle verbose primitives', function () {
+    	parser.loadSchema({
+			"type": "record",
+			"name": "VerboseTest",
+			"fields": [
+				{ name: "test", type: [ null, { type: 'int' } ] }
+			]
+		});
+
+		var result = parser.jsonToAvroJson(
+			{
+				test: 99
+			}
+			, 'VerboseTest'
+		);
+		assert.equal(result.test.int, 99);
+
+    });
+
   });
 
 });
