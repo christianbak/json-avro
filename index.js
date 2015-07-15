@@ -1,4 +1,5 @@
 var Parser = require('./lib/parser');
+var Decoder = require('./lib/decoder');
 var Schema = require('./lib/schema');
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
 		return Parser.parse(json, schemaName);
 	},
 
-	avroJsonToJson: function(avroJson) {
-
+	avroJsonToJson: function(avroJson, schemaName) {
+		return Decoder.decode(avroJson, schemaName);
 	}
-}
+};
