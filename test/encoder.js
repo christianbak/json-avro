@@ -1,52 +1,12 @@
 var assert = require('assert');
-
-var parser = require('../index.js')
-
-var SimpleRecordSchema = {
-	type: 'record',
-	name: 'SimpleRecord',
-	fields: [
-		{ name: 'value', type: ['null', 'string'] }
-	]
-};
-
-var LongListSchema = {
-		  "type": "record",
-		  "name": "LongList",
-		  "aliases": ["LinkedLongs"],                      // old name for this
-		  "fields" : [
-		    {"name": "value", "type": "long"},             // each element has a long
-		    {"name": "next", "type": ["null", "LongList"]} // optional next element
-		  ]
-		};
-
-var ArraySchema = {
-	"type": "record",
-	"name": "ArrayTest",
-	"fields": [
-		{ name: "recordList", type: { type: 'array', items: 'SimpleRecord'} }
-	]
-	
-};
-
-var InlineArraySchema = {
-	"type": "record",
-	"name": "ArrayTest",
-	"fields": [
-		{
-			name: "recordList", type: {
-				type: 'array', items: SimpleRecordSchema
-			}
-		}
-	]
-	
-};
+var parser = require('../index.js');
+var Schemas = require('./schemas.js');
 
 describe('Avro-Parser', function() {
-  
+
   describe('toAvroJson', function () {
     it('should parse records', function () {
-    	parser.loadSchema(LongListSchema);
+    	parser.loadSchema(Schemas.LongListSchema);
 
 		var result = parser.jsonToAvroJson(
 			{
@@ -66,7 +26,7 @@ describe('Avro-Parser', function() {
     });
 
     it('should retun null for a pure null value', function () {
-    	parser.loadSchema(LongListSchema);
+    	parser.loadSchema(Schemas.LongListSchema);
 
 		var result = parser.jsonToAvroJson(
 			{
@@ -80,8 +40,8 @@ describe('Avro-Parser', function() {
     });
 
     it('should parse arrays', function () {
-    	parser.loadSchema(SimpleRecordSchema);
-    	parser.loadSchema(ArraySchema);
+    	parser.loadSchema(Schemas.SimpleRecordSchema);
+    	parser.loadSchema(Schemas.ArraySchema);
 
     	var result = parser.jsonToAvroJson(
 			{
@@ -95,7 +55,7 @@ describe('Avro-Parser', function() {
 	});
 
 	it('should handle inline records', function () {
-    	parser.loadSchema(InlineArraySchema);
+    	parser.loadSchema(Schemas.InlineArraySchema);
 
     	var result = parser.jsonToAvroJson(
 			{
@@ -127,5 +87,4 @@ describe('Avro-Parser', function() {
     });
 
   });
-
 });
